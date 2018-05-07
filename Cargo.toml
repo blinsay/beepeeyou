@@ -1,0 +1,8 @@
+[package]
+name = "beepeeyou"
+version = "0.1.0"
+authors = ["benl <blinsay@gmail.com>"]
+
+[dependencies]
+cpal = "0.8.1"
+libc = "0.2.40"
