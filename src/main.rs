@@ -94,7 +94,11 @@ where
     let mut frequency = (220f32 * get_frequency()).min(MAX_FREQ);
 
     let mut calculate_next_sample = move || {
-        let next_sample = ((sample_clock / sample_rate) * frequency * 2.0 * PI).sin();
+        let next_sample = if ((sample_clock / sample_rate) * frequency * 2.0 * PI).sin() > 0.0 {
+            1.0
+        } else {
+            -1.0
+        };
         sample_clock = (sample_clock + 1.0) % sample_rate;
 
         if sample_clock % 1000.0 == 0.0 {
