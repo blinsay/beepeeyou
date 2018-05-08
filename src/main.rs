@@ -10,6 +10,7 @@ use std::thread::{sleep, spawn};
 use std::time::Duration;
 
 const LOAD_MULT: f64 = 10.0;
+const MAX_FREQ: f32 = 2093.0; // C7
 
 fn main() {
     let load = Arc::new(AtomicUsize::new(LOAD_MULT as usize));
@@ -90,14 +91,14 @@ where
     let channels = output_format.channels as usize;
 
     let mut sample_clock = 0f32;
-    let mut frequency = 220f32 * get_frequency();
+    let mut frequency = (220f32 * get_frequency()).min(MAX_FREQ);
 
     let mut calculate_next_sample = move || {
         let next_sample = ((sample_clock / sample_rate) * frequency * 2.0 * PI).sin();
         sample_clock = (sample_clock + 1.0) % sample_rate;
 
         if sample_clock % 1000.0 == 0.0 {
-            frequency = 220f32 * get_frequency();
+            frequency = (220f32 * get_frequency()).min(MAX_FREQ);
         }
 
         next_sample
